@@ -28,15 +28,19 @@ FROM docker.io/ubuntu:24.04
 LABEL maintainer="Rouven Himmelstein rouven@himmelstein.info"
 
 ## Game server parameter and their defaults
-ENV BEAMMP_PORT "30814"
-ENV BEAMMP_NAME "BeamMP New Server"
-ENV BEAMMP_MAP "/levels/gridmap_v2/info.json"
-ENV BEAMMP_DESCRIPTION "BeamMP Default Description"
-ENV BEAMMP_MAX_CARS "1"
-ENV BEAMMP_MAX_PLAYERS "10"
-ENV BEAMMP_PRIVATE "true"
-ENV BEAMMP_DEBUG "false"
-ENV BEAMMP_AUTH_KEY ""
+##
+## Commenting to prevent the overwriting of 
+## user values.
+##
+#ENV BEAMMP_PORT "30814"
+#ENV BEAMMP_NAME "BeamMP New Server"
+#ENV BEAMMP_MAP "/levels/gridmap_v2/info.json"
+#ENV BEAMMP_DESCRIPTION "BeamMP Default Description"
+#ENV BEAMMP_MAX_CARS "1"
+#ENV BEAMMP_MAX_PLAYERS "10"
+#ENV BEAMMP_PRIVATE "true"
+#ENV BEAMMP_DEBUG "false"
+#ENV BEAMMP_AUTH_KEY ""
 ENV TZ "UTC"
 
 # Install game server required packages
@@ -47,8 +51,10 @@ RUN apt update &&  \
 
 # Create game server folder
 RUN mkdir -p /beammp/Resources/Server /beammp/Resources/Client
-VOLUME /beammp/Resources/Server
-VOLUME /beammp/Resources/Client
+VOLUME /beammp/Resources
+## Consolidating into a resources volume mount
+#VOLUME /beammp/Resources/Server
+#VOLUME /beammp/Resources/Client
 WORKDIR /beammp
 
 # Copy the previously downloaded executable
