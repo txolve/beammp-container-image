@@ -7,6 +7,7 @@ services:
       dockerfile: Containerfile
     stdin_open: true
     tty: true
+    restart: unless-stopped
     environment:
       # Game server parameter
       - BEAMMP_PRIVATE
@@ -20,12 +21,16 @@ services:
       - BEAMMP_AUTH_KEY
       - TZ
     volumes:
-      # Map a custom ServerConfig.toml file to the container, this is optional
-      #- ./ServerConfig.toml:/beammp/ServerConfig.toml
+      # Map a custom ServerConfig.toml file to the container,
+      # which is encouraged in this container image
+      - ./ServerConfig.toml:/beammp/ServerConfig.toml
+      # Mapped the resource folder into a singular folder
+      # Added private mount flag for selinux compatibility
+      - ./resource-folder:/beammp/Resources:Z
       # Just move all the client mods you want to add into this folder
-      - ./client-mods:/beammp/Resources/Client
+      #- ./client-mods:/beammp/Resources/Client
       # All server mods belong here
-      - ./server-mods:/beammp/Resources/Server
+      #- ./server-mods:/beammp/Resources/Server
     ports:
       - "${BEAMMP_PORT:-30814}:${BEAMMP_PORT:-30814}/tcp"
       - "${BEAMMP_PORT:-30814}:${BEAMMP_PORT:-30814}/udp"
